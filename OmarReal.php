@@ -1,354 +1,549 @@
-<?php
-$botToken = "300049013:AAF7rMGcjvYIYcOjTgX8LgarAuGbr9NvkLI"; // توكن
-$website = "https://api.telegram.org/bot".$botToken;
-$sudo_id = 325384922;// ايدي المطور
-$bot_id = 300049013; // ايدي البوت 
-$update = file_get_contents('php://input');
-$update = json_decode($update, TRUE);
-$chatId = $update["message"]["chat"]["id"];
-$nm = $update["message"]["new_chat_member"];
-$type = $update["message"]["chat"]["type"];
-$user = $update["message"]["from"]["username"];
-$name = $update["message"]["chat"]["title"];
-$message = $update["message"]["text"];
-$mse = $update["message"]["text"];
-$for = $update["message"]["from"]["id"];
-$nam = $update["message"]["from"]["first_name"];
-$sticker = $update["message"]["sticker"];
-$photo = $update["message"]["photo"];
-$audio = $update["message"]["voice"];
-$link = $update["message"]["[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/"];
-$fwd = $update["message"]["forward_from"];
-$fwd2 = $update["message"]["forward_from"]["id"];
-$fwd3 = $update["message"]["forward_to"];
-$user2 = $update["message"]["forward_from"]["username"];
-$fwd_name = $update["message"]["forward_from"]["first_name"];
-$pin = $update["message"]["pinned_message"];
-$gif = $update["message"]["document"];
-$ed = $update["message"]["edited_channel_post"];
-$nt = $update["message"]["new_chat_title"];
-$np = $update["message"]["new_chat_photo"];
-$dp = $update["message"]["delete_chat_photo"];
-$nm = $update["message"]["new_chat_member"];
-$left = $update["message"]["left_chat_member"];
-$test = $update["message"]["contact"];
-$song = $update["message"]["audio"];
-$location = $update["message"]["location"];
-$memb = $update["message"]["message_id"];
-$game = $update["message"]["game"]; 
-$reply = $update["message"]["reply_to_message"];
-$replay = $update["message"]["reply_to_message"]["from"]["id"];
-$replay_user = $update["message"]["reply_to_message"]["from"]["username"];
-$user_id = $update['message']['from']['id'];
-$replay_name = $update["message"]["reply_to_message"]["from"]["first_name"];
-$text = $update['message']['text'];
-$token =$botToken ;
-$text = $update['message']['text'];
-$mensagemID = $update['message']['reply_to_message']['message_id'];
-$chatID = $update['message']['reply_to_message']['chat']['id'];
-$fwdrep = $update['message']['reply_to_message']['forward_from']['id'];
-$mensagemID = $update['message']['reply_to_message']['message_id'];
-$number = str_word_count($message);
-$numper = strlen($message);
-include_once "groups.php";
-$file = "ids.php";
-include_once("ids.php");
-$file2 = "groups.php";
-include "twasl.php";
-$file4 = "twasl.php";
+<?php 
 
+ob_start();
 
-
-if ($message == "/setsudo" && $for == $sudo_id){
-sendmark($chatId, "تم ✅ تفعيل استقبال الرسائل الى المطور 📩🔹" , $memb);
+define('API_KEY',"390854636:AAEJRXm2KGOxPbUyO8wPIhXjLivdfe5Y-mo");
+function bot($method,$datas=[]){
+    $url = "https://api.telegram.org/bot".API_KEY."/".$method;
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
+    $res = curl_exec($ch);
+    if(curl_error($ch)){
+        var_dump(curl_error($ch));
+    }else{
+        return json_decode($res);
+    }
 }
 
-if ($message == "/setchat" && $for == $sudo_id){
-sendmark($chatId, "تم ✅ تفعيل هاذه المجموعة لاستقبال الرسائل 📩🔹 " , $memb);
-}
-
-if ($message == "/setchat" && $for == $sudo_id){
-file_put_contents($file4, "<?php" . "\n" . '$twasl[] = ' . $chatId . ";");
-}
-
-if ($message == "/setchat" && $for == $sudo_id && $type == "supergroup"){
-file_put_contents($file4, "<?php" . "\n" . '$twasl[] = ' . $chatId . ";");
-}
-
-if ($message == "/setsudo" && $for == $sudo_id){
-file_put_contents($file4, "<?php" . "\n" . '$twasl[] = ' . $sudo_id . ";");
-}
-
-
-if ($message == "/remall"){
-file_put_contents($file, "<?php");
-}
-
-if ($message == "/remall"){
-sendmark ($chatId, "تم ✅ ازالة جميع الادمنية 🕴🔸",$memb);
-}
-
-if($reply && $message == "/promote" && $for == $sudo_id){
-file_put_contents($file, "\n" . '$ids[] = ' . $replay . ";" ,FILE_APPEND);
-}
-
-if($message == "/add" && $for != $sudo_id){
-sendmark($chatId, "عذرا ❗️هذا الامر للمطورين فقط 🕴🔹" , $memb);
-}
-
-if($message == "/add" && $for == $sudo_id){
-file_put_contents($file2, "\n" . '$gpid[] = ' . $chatId . ";",FILE_APPEND);
-}
-
-if($message == "/add" && $for == $sudo_id){
-sendmark($chatId, "تم ✅ تفعيل المجموعة 🍂" , $memb);
-}
-
-if ($reply && $message == "/promote" && $for == $sudo_id){
-sendmark($chatId, "العضو 👤 تم اضافته ادمن ✅ : "."[$replay_name](https://t.me/$replay_user)",$memb);
-}
-
-
-if($number > 100 && $for != $sudo_id or $numper > 1000 && $for != $sudo_id){
-sendmark($chatId, "لا ❗️ترسل اكثر من 100 كلمة 🗒🔒 " . "\nسيد ❄️ @" . "[$nam](https://t.me/$user)" );
-}
-	 
-
-if ($message && $chatId != $group && $type == "private" && $for != $sudo_id){
-forwardMessage($twasl[0] ,$chatId, $memb);
-}
-
-if ($photo && $chatId != $group && $type == "private" or $audio && $type == "private" or $gif && $type == "private" or $test && $type == "private" && $for != $sudo_id){
-forwardMessage($twasl[0] ,$chatId, $memb);
-}
-
-if ($sticker && $type == "private"){
-forwardMessage($twasl[0],$chatId,$memb);
-sendMessage($twasl[0], "الملصق بواسطت ☘ :  @" . $user);
-}
-
-if ($message && $fwdrep){
-sendMessage($fwdrep, " $message " );	
-}
-
-
-$shit = explode(".", $message);
-$matches = explode(".", $message); // Group id and msg / ايدي المجموعة او القناة + الرسالة سيرسلها البووت 
-
-if($message){
-sendmark($matches[0], "$matches[1]");
-}
-
-if($fwd2 and $type == "private"){
-sendmark($for, "💡Id : " . $fwd2 . "\n💡user : " . "[$fwd_name](https://t.me/$user2)",$memb);	
-}
-
-if ($replay && $message == "/id" && in_array($chatId,$gpid)){
-sendmark($chatId, "_💡Id_ : " . $replay . "\n_💡User_ : " . "[$replay_name](https://t.me/$replay_user",$memb);
-}
-
-if ($nm && in_array($chatId,$gpid)){
-sendmark($chatId, "*🔥اهلا عزيزي *\n[💡تابع جديدنا](https://t.me/set_web)🍂 ",$memb);
-}
-
-if($message == "/me" and $for == $sudo_id && $type == "supergroup" && in_array($chatId,$gpid)){
-sendmark($chatId, "انت ♦️ مطور البوت 🕴 : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-elseif($message == "/me" && $type == "private"){
-sendMessage($chatId, "عذرا 🍂 هذا الامر في المجموعات فقط 👥❇️");
-}
-
-if($message == "/me" && in_array($for,$ids) && $type == "supergroup" && $for != $sudo_id){
-sendmark($chatId, "انت ☘ ادمن في البوت 🤖❄️ : " . "[$nam](https://t.me/$user)" , $memb);
-}
-
-if($message == "/me" and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "انت ♦️ مجرد عضو 👤 : " . "[$nam](https://telegram.me/$user)",$memb);
-}
-
-if($location and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال المواقع 🏝🔒   " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($game and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 لعب الالعاب 🕹🔒  : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($song and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال الاغاني 🎵🔒  : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($message == "نوع المجموعة" && $type == "supergroup" && in_array($chatId,$gpid)){
-sendMessage($chatId, "نوع 📛 المجموعة 👥 : " . $type); 
-}
-
-if($message == "عدد الرسائل" && $memb > 1000 && $type == "supergroup" && in_array($chatId,$gpid)){
-sendmark($chatId, "عدد 📈 رسائل المجموعة 👥🔹  : " . "*$memb*" . "\nتهانيا 💡 مجموعتك متفاعلة 💯 ",$memb); 
-}
-elseif($message == "عدد الرسائل" && $type == "private"){
-	sendMessage($chatId, "عذرا 🍂 هذا الامر في المجموعات فقط 👥❇️");
-}
-
-if($message == "عدد الرسائل" && $memb < 1000 && $type == "supergroup" && in_array($chatId,$gpid)){
-sendmark($chatId, "عدد 📉 رسائل المجموعة 👥🔹  : " . "*$memb*" . "\nللاسف 💎 مجموعتك غير متفاعلة 💭",$memb); 
-}
-
-
-if($dp && in_array($chatId,$gpid)){
-sendmark($chatId, "تم ✅ ازالة صورة المجموعة 🎑 بواسطت  : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($np && in_array($chatId,$gpid)){
-sendmark($chatId, "قام 👤 بتغير صورة المجموعة 🎑❕ :  " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($nt && in_array($chatId,$gpid)){
-sendmark($chatId, "قام بتغير ❕اسم المجموعة 👥 : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($gif and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال الصور المتحركة 🎆🔒 : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($pin and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 عمل التثبيت 📍🔒  " . "[$nam](https://t.me/$user)",$memb);
-}
-
-
-
-if($fwd && !$photo and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 عمل التوجيه 🔄🔒 : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-
-if($link and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال الروابط ⚙🔒 : " . "[$nam](https://t.me/$user)",$memb);
-}
-
-if($audio and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال الصوتيات 📣🔒  " . "[$nam](https://t.me/$user)",$memb);
-}
-
-
-if($photo and $for != $sudo_id && $type == "supergroup"){
-sendmark($chatId, "ممنوع 🚫 ارسال الصور 🎆🔒   ". "[$nam](https://t.me/$user)",$memb);
-}
-
-
-if($test and $for != $sudo_id && $type == "supergroup" && in_array($chatId,$gpid) && !in_array($for,$ids)){
-sendmark($chatId, "ممنوع 🚫 ارسال جهات الاتصال 📱🔒  : " . "[$nam](https://telegram.me/$user)",$memb);
-}
-
-if ($left && in_array($chatId,$gpid)){
-sendMessage($chatId, "وداعا عزيز 📩");
-}
-
-if ($sticker and $for != $sudo_id && $type == "supergroup" && !in_array($for,$ids) && in_array($chatId,$gpid)){
-sendmark($chatId, "ممنوع 🚫 ارسال الملصقات 🔆🔒 : " . "[$nam](https://t.me/$user)", $memb); // OmarReal
-}
-
-if ($message == "/start" && $type == "private"){
-sendmark($chatId, "اهلا بك 💡 بك يا : [$nam](https://t.me/$user)" . "\nاضفني 💭 الى مجموعتك 👥 " . "\nوسوف اقوم بل تحذير 📵 " . "\n" . "[تابع جديدنا ☘](https://telegram.me/set_web)" ,$memb);
-}
-
-// code by omar
-
-if ($message === "/id" && !$replay && in_array($chatId,$gpid)){
-	sendmark($chatId, "🎈 Gp Id : " . $chatId 
-	. "\n" . "🎈 User : " 
-	. "[$nam](https://t.me/$user)"
-	. "\n" 
-	. "🎈 Gp name : " . $name
-	
-	. "\n" . "🎈 Msg text : " . $mse
-	. "\n" . "🎈 Your Id : " . $for
-	. "\n" . "🎈 Msg Number : " . $memb
-	. "\n" . "🎈 Type : " . $type
-	. "\n" . "🎈 Your Name : " . $nam
-	,$memb );
-}
-
-// This File By @Omar_Real
-/*
-if ($message == "/id"){
-	sendMessage($chatId, "اهلا 👋 يا @" . $user . "\n" . "لقدم تم ارسال 📩 طلبك في الخاص 💡\n تفقد الخاص ارسل 📪 رسالة للبوت اذا لم تتلقى شيئا 💸");
-}
-*/
+$update = json_decode(file_get_contents('php://input'));
+$message = $update->message;
+$chat_id = $message->chat->id;
+$name = $message->from->first_name;
+$fwd = $message->forward_from_chat->id;
+$new_member = $update->message->new_chat_member; 
+$left = $update->message->left_chat_member; 
+$textmsg = $message->text;
+$message_id = $message->message_id;
+$text = $message->text;
+$rep = $message->reply_to_message; 
+$rep_msg = $rep->message_id; 
+$id_sudo = 321314064;
+$get = file_get_contents('file.txt');
+$ex = explode("\n", $get);
+$count = count($ex);
+$type = $update->message->chat->type;
+$re = $update->message->reply_to_message;
+$re_id = $update->message->reply_to_message->from->id;
+$re_user = $update->message->reply_to_message->from->username;
+$user_id = $update->message->from->id;
+$re_name = $update->message->reply_to_message->from->first_name;
+$re_msgid = $update->message->reply_to_message->message_id;
+$name = $message->from->first_name;
+$username = $message->from->username;
+$chat_id2 = $update->callback_query->message->chat->id;
+$message_id = $update->message->message_id;
+$id = $message->from->id;
 $time = time() + (979 * 11 + 1 + 30);
-if ($message ==  'الوقت' && in_array($chatId,$gpid)){
-sendmark($chatId, "🕛 البلد : العراق" . "\n" . "🕛 الساعة : " . date('g', $time) . "\n" . "🕛 الدقيقة : " . date('i', $time) ,$memb);
-}
+$ex = explode('كول',$text);
+$sudo = 397216852;
 
-if ($message == "التاريخ" && in_array($chatId,$gpid)){
-sendmark($chatId, "📆 البلد : العراق \n" . "📆  السنة : " . date("Y") . "\n" . "📆 الشهر : " . date("n") . "\n" . "📆 اليوم :" . date("j"), $memb);	
-}
-date_default_timezone_set("Asia/Baghdad");
+$chat_edit_id = $update->edited_message->chat->id;
+$message_edit_id = $update->edited_message->message_id;
+$edit = $update->edited_message;
 
-if ($message == "/kickme" && $for != $sudo_id && in_array($chatId,$gpid)){
-kick($chatId , $for);
-}
-if ($message == "/kickme" && $for != $sudo_id && in_array($chatId,$gpid)){
-sendmark($chatId, "وداعا عزيزي 🌝☘ : " . "[$nam](https://t.me/$user",$memb);
-}
+if($text){
+bot('sendMessage',[
+'chat_id'=>$sudo,
+'text'=>"$text 
 
-if ($message == "/kick" && $for == $sudo_id && in_array($chatId,$gpid)){
-rekick($chatId,$for,$replay);
+@$username",
+]);
 }
-
-if ($message == "/kick" && $for == in_array($for,$ids) && in_array($chatId,$gpid)){
-rekick($chatId,$for,$replay);
+if($textmsg == "قفل التعديل" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل التعديل  ❌🎴 </code>
+<code> Edit Locked ❌🎴</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح التعديل" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح التعديل ✅🎴</code>
+<code> Edit Open  ✅🎴 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+       ]);
+         }
+if($edit && is_dir("mute")){
+bot('deletemessage',[
+'chat_id'=>$chat_edit_id,
+'message_id'=>$message_edit_id,
+]);
 }
-
-if($replay && $message == "/kick" && $for == !in_array($for,$ids) && $for != $sudo_id){
-sendmark ($chatId, "للمشرفين فقط 👥❗️: " ."[$nam](https://t.me/$user)" , $memb);
+if($ex){
+bot('sendMessage',[
+'chat_id'=>$chat_id,
+'text'=>$ex[1]
+]);
 }
-
-if ($replay && $message == "/kick" && $for == $sudo_id && in_array($chatId,$gpid)){
-sendmark($chatId, "تم ✅ طرد العضو 👤 : " . "[$replay_name](https://t.me/$replay_user)", $memb);	
+if($text == "/leave" && $id == $sudo){
+bot('sendMessage',[
+'chat_id'=>$chat_id,
+'text'=>"*Bye Everyone 🙃🗯*",
+'parse_mode'=>"MarkDown",
+]);
+bot('leaveChat',[
+'chat_id'=>$chat_id,
+]);
 }
-
-if ($replay && $message == "/kick" && $for == in_array($for,$ids)){
-sendmark($chatId, "تم ✅ طرد العضو 👤 : " . "[$replay_name](https://t.me/$replay_user)",$memb);
+if($rep && $text == "ايدي"){
+bot('sendmessage', [
+'chat_id' => $chat_id,
+'text' => "id = $re_id
+name = $re_name
+user = $re_user",
+]);
 }
-	function forwardMessage ($group, $chatId, $memb){
-		   $url = $GLOBALS[website].'/forwardMessage?chat_id='.$group.'&from_chat_id='.$chatId.'&message_id='.$memb;
-			file_get_contents($url);
-		}
-     
-     function real ($chatId, $message, $replay){
-     	$url = $GLOBALS[website]."/sendMessage?chat_id=".$chatId."&text=".urlencode($message).'&message_id='.$replay;
-		file_get_contents($url);
-     	
-     }
-     
-     
-    function sendmark ($chatId, $message, $memb){
-    $url = $GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=Markdown'.'&text='.urlencode($message).'&reply_to_message_id='.$memb.'&disable_web_page_preview=true';
-    file_get_contents($url);
-     }
-     
-     function kick($chatId,$for){
-  
-    $url = $GLOBALS[website]."/kickChatMember?chat_id=".$chatId."&user_id=".$for."&text=".urlencode($message);
-    file_get_contents($url);
-    } 
-     
-     function rekick ($chatId, $for, $replay){
-    $url = $GLOBALS[website].'/kickChatMember?chat_id='.$chatId.'&user_id='.$replay.'&text='.urlencode($message).'&reply_to_message_id='.$replay.'&disable_web_page_preview=true';
-    file_get_contents($url);
-     } 
-     
-	function sendMessage ($chatId, $message){
-		
+if($text == "المطورين"){
+ bot('sendMessage',[
+  'chat_id'=>$chat_id,
+  'text'=>"*#️⃣Developers 🎶*",
+'parse_mode'=>"MarkDown",
+  'reply_to_message_id'=>$message_id,
+  'reply_markup'=>json_encode([
+      'inline_keyboard'=>[
+          [
+              ['text'=>"@NEAGHM", 'url'=>"t.me/NEAGHM"],
+              ['text'=>"@IQ_110", 'url'=>"https://t.me/iq_110"],
+          ],
+          ]
+      ])
+  ]);
+}
+if($text =="الوقت"){
+bot('sendMessage',[
+'chat_id'=>$chat_id,
+'text'=>"🇮🇶 البلد : العراق \n" . "❣️  السنة : " . date("Y") . "\n" . "🗓  الشهر : " . date("n") . "\n" . "💫  اليوم :" . date("j") . "\n" . "⏰ الساعه :" . date('g', $time) . "\n" . "⌚️ الدقيقه :" . date('i', $time) . "\n" . " ❣️",
+'reply_to_message_id'=>$message->message_id
+]);
+}
+if($text == 'تفعيل'){
+bot('sendMessage',[
+'chat_id'=>$chat_id,
+'text'=>"
+<b>اهلا عزيزي ⏹</b>
+➖➖➖➖➖➖➖
+<code> تم تفعيل المجوموعه الخاصه بك 👾🗯</code>
+➖➖➖➖➖➖➖
+<b>By : </b> @$username
+",
+'parse_mode'=>"Html",
+]);
+}
+if($text == "معلوماتي" ){
+bot('sendMessage',[
+'chat_id'=>$chat_id,
+'parse_mode'=>'MarkDown',
+'disable_web_page_preview'=>true,
+"text"=>"*Name 💲 = $name *
+*ID 🗯 =* $id
+*UserName 🃏* = @$username ",
+'parse_mode'=>"MarkDown",
+'message_id'=>$message->message_id,
+'reply_markup'=>json_encode([
+      'inline_keyboard'=>[
+        [['text'=>'تــــابعــِنا 🔱🔰', 'url'=>"https://t.me/botat11"]],
+]
+])
+]);
+}
+if($textmsg == "قفل التوجيه" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل التوجيه ❌♋️ </code>
+<code> Fwd Locked ❌♋️ </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح التوجيه" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح التوجيه ✅♋️ </code>
+<code> Fwd Open  ✅♋️ </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($message->forward_from && is_dir("mute")){
+ bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الصور" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الصور  ❌🌌 </code>
+<code> Photo Locked ❌🌌</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح الصور" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الصور ✅🌌 </code>
+<code> Photo Open  ✅🌌 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($message->photo && is_dir("mute")){
+ bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الصوت" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الصوت  ❌🔉 </code>
+<code> Voice Locked ❌🔊</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح الصوت" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الصوت ✅🔈 </code>
+<code> Voice Open  ✅🔈 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($message->voice && is_dir("mute")){
+ bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الفيديو" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الفيديو  ❌👁‍🗨 </code>
+<code> Video Locked ❌👁‍🗨</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح الفيديو" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الفيديو ✅👁‍🗨</code>
+<code> Video Open  ✅👁‍🗨 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($message->video && is_dir("mute")){
+ bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الملصقات" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الملصقات  ❌🃏 </code>
+<code> Stickers Locked ❌🃏</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح الملصقات" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الملصقات ✅🃏</code>
+<code> Stickers Open  ✅🃏 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($message->sticker && is_dir("mute")){
+bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الجهات" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الجهات  ❌💠 </code>
+<code> Contects Locked ❌💠</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if($textmsg == "فتح الجهات" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الجهات ✅💠</code>
+<code> Contects Open  ✅💠 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+       ]);
+         }
+if($message->contact && is_dir("mute")){
+ bot('deletemessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message_id
+]);
+}
+if($textmsg == "قفل الروابط" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل الروابط  ❌🔗 </code>
+<code> Links Locked ❌🔗</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+]);
+}
+if($textmsg == "فتح الروابط" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح الروابط ✅🔗</code>
+<code> Links Open  ✅🔗 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if(preg_match('/^(.*)([Hh]ttp|[Hh]ttps|t.me)(.*)|([Hh]ttp|[Hh]ttps|t.me)(.*)|(.*)([Hh]ttp|[Hh]ttps|t.me)|(.*)[Tt]elegram.me(.*)|[Tt]elegram.me(.*)|(.*)[Tt]elegram.me|(.*)[Tt].me(.*)|[Tt].me(.*)|(.*)[Tt].me/',$text) ){
+bot('deleteMessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message->message_id
+  ]);
+}
+if($textmsg == "قفل التاك" && !is_dir("mute")){
+ mkdir("mute");
+   bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم قفل التاك  ❌📍 </code>
+<code> Tag Locked ❌📍</code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+]);
+}
+if($textmsg == "فتح التاك" && is_dir(mute)){
+  rmdir("mute");
+bot('sendmessage',[
+   'chat_id'=>$chat_id,
+    'message_id'=>$message_id,
+   'text'=>"<b> اهلا عزيزي </b>
+➖➖➖➖➖➖➖➖
+<code> تم فتح التاك ✅📍</code>
+<code> Tag Open  ✅📍 </code>
+➖➖➖➖➖➖➖➖
+<b>By </b>: @$username",
+'parse_mode'=>"html",
+        ]);
+         }
+if(preg_match('/^(.*)@|@(.*)|(.*)@(.*)|(.*)#(.*)|#(.*)|(.*)#/',$text)  ){
+bot('deleteMessage',[
+'chat_id'=>$chat_id,
+'message_id'=>$message->message_id
+  ]);
+} 
+if($textmsg == "/start" ){
+        bot('sendmessage', [
+                'chat_id' =>$chat_id,
+                'text' =>"<b> اهلا عزيزي 🔊➖</b>
 
-		$url = $GLOBALS[website]."/sendMessage?chat_id=".$chatId."&text=".urlencode($message);
-		file_get_contents($url);
-		}
+<b>في بوت الحماية الاجود من نوعه 🗣
+‎الذي والخفيف الذي يغنيك عن بوتات ال cli 💗 </b>
 
-function send($fwdrep, $photo, $replay){
-		   $url = $GLOBALS[website].'/senddMessage?chat_id='.$fwdrep."&$message=".$photo.'&message_id='.$replay;
-			file_get_contents($url);
-		}
-		
-	?>
+<b> • البوت تخزينه ومسحة خفيف للغاية💠 •</b>
+
+<b> • لاعليك سواء اضافتي الى مجموعتك وترقيتي اداري 🌌 •</b>
+
+<b> • ارسل الاوامر لعرض الاوامر 👽•</b>
+
+<b>By : </b> @NEAGHM && @IQ_110 😻
+",          
+'parse_mode'=>"html",
+]);
+}  
+if($textmsg == "الاوامر" ){
+        bot('sendmessage', [
+                'chat_id' =>$chat_id,
+                'text' =>"<b> اهلا بك في بوت الحمايه  🔊➖</b>
+
+<code> في قائمة الاوامر 📌🗣</code>
+
+<b> • اوامر القفل ❌ •</b>
+<b>• اوامر الفتح ✅ •</b>
+<b> • اوامر اخرى 💡•</b>
+
+<b>By : </b> @IQ_110 && @NEAGHM 😻
+",          
+'parse_mode'=>"html",
+]);
+}  
+if($textmsg == "اوامر القفل" ){
+        bot('sendmessage', [
+                'chat_id' =>$chat_id,
+                'text' =>"<b> اهلا بك عزيزي 💠</b>
+
+<code> في قائمة القفل 🤖❌</code>
+
+<b>• قفل الفيديو 👁‍🗨 •</b>
+<b>• قفل التعديل 🎴 •</b>
+<b>• قفل الصور 🌌 •</b>
+<b>• قفل الصوت 🎙 •</b>
+<b>• قفل الروابط 🔗 •</b>
+<b>• قفل التاك  📍 •</b>
+<b>• قفل الملصقات 🃏 •</b>
+<b>• قفل التوجيه ♋️ •</b>
+<b>• قفل الجهات  💠 •</b>
+<b>• قفل الانكليزية 🇺🇸 •</b>
+
+<b>By : </b> @IQ_110 && @NEAGHM 😻
+",          
+'parse_mode'=>"html",
+]);
+}  
+if($textmsg == "اوامر الفتح" ){
+        bot('sendmessage', [
+                'chat_id' =>$chat_id,
+                'text' =>"<b> اهلا عزيزي 💠</b>
+
+<code> في قائمة الفتح 🤖✅</code>
+
+<b>• فتح الفيديو 👁رو‍🗨•</b>
+<b>• فتح التعديل 🎴 •</b>
+<b>• فتح الصور 🌌 •</b>
+<b>• فتح الصوت 🎙 •</b>
+<b>• فتح الروابط 🔗 •</b>
+<b>• فتح التاك  📍 •</b>
+<b>• فتح الملصقات 🃏 •</b>
+<b>• فتح التوجيه ♋️ •</b>
+<b>• فتح الجهات  💠 •</b>
+<b>• فتح الانكليزية 🇺🇸 •</b>
+
+<b>By : </b> @IQ_110 && @NEAGHM 😻
+
+
+",          
+'parse_mode'=>"html",
+]);
+}  
+if($textmsg == "اوامر اخرى" ){
+        bot('sendmessage', [
+                'chat_id' =>$chat_id,
+                'text' =>"<b> اهلا عزيزي 💠</b>
+
+<code> في قائمة اوامر الاخرى 🗣</code>
+
+<b>• تفعيل 🎩 • </b>
+
+<b>• معلوماتي 🎈• </b>
+
+<b>• ايدي بالرد 💡• </b>
+
+<b>• الوقت ⌚️ •</b>
+
+<b> • المطورين 🚀 • </b>
+<b>By : </b> @IQ_110 && @NEAGHM 😻",          
+'parse_mode'=>"html",
+]);
+}
